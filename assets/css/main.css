@@ -1639,3 +1639,45 @@ section,
 .starter-section {
   /* Add your styles here */
 }
+/*my edit*/
+ .education-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .education-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .edu-left {
+    flex: 1 1 70%;
+  }
+
+  .edu-right {
+    flex: 1 1 25%;
+    text-align: right;
+    font-weight: bold;
+    color:var(--heading-font);
+  }
+
+  .education-item i {
+    margin-right: 0.5rem;
+    color: #007bff;
+  }
+
+  @media (max-width: 600px) {
+    .education-item {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .edu-right {
+      text-align: left;
+      margin-top: 0.5rem;
+    }
+  }
