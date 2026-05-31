@@ -1628,6 +1628,19 @@ section:last-of-type::after,
   margin-bottom: 30px;
 }
 
+.contact .info-item {
+  height: 100%;
+}
+
+.contact .contact-link {
+  color: var(--default-color);
+  text-decoration: none;
+}
+
+.contact .contact-link:hover {
+  color: var(--default-color);
+}
+
 .contact .info-item i {
   font-size: 20px;
   color: var(--accent-color);
@@ -1659,16 +1672,89 @@ section:last-of-type::after,
   color: var(--contrast-color);
 }
 
-.contact .php-email-form {
+.contact .contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.contact .contact-actions a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 7px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  color: var(--accent-color);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.contact .contact-actions a:hover {
+  border-color: var(--accent-color);
+  background: var(--accent-color);
+  color: var(--contrast-color);
+}
+
+.contact .contact-map {
   background-color: var(--surface-color);
   border: 1px solid var(--border-color);
   box-shadow: 0px 18px 40px rgba(0, 0, 0, 0.18);
   padding: 30px;
 }
 
+.contact .map-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.contact .map-header h3 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  text-align: left;
+}
+
+.contact .map-header a {
+  flex: 0 0 auto;
+  color: var(--accent-color);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.contact .map-header a:hover {
+  color: color-mix(in srgb, var(--accent-color), transparent 20%);
+}
+
+.contact .contact-map iframe {
+  display: block;
+  width: 100%;
+  min-height: 420px;
+  border: 0;
+  border-radius: 8px;
+  filter: grayscale(18%);
+}
+
+.light-mode .contact .contact-map,
+.light-mode .contact .info-wrap {
+  box-shadow: 0px 18px 38px rgba(21, 25, 34, 0.1);
+}
+
 @media (max-width: 575px) {
-  .contact .php-email-form {
+  .contact .contact-map {
     padding: 20px;
+  }
+  .contact .map-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .contact .contact-map iframe {
+    min-height: 320px;
   }
   body {
     font-size: 13px;
