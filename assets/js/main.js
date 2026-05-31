@@ -153,6 +153,24 @@
   });
 
   /**
+   * Toggle portfolio descriptions
+   */
+  document.querySelectorAll(".portfolio-description-toggle").forEach((button) => {
+    button.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const info = this.closest(".portfolio-info");
+      if (!info) return;
+
+      info.classList.toggle("details-open");
+      this.textContent = info.classList.contains("details-open")
+        ? "Hide description"
+        : "View description";
+    });
+  });
+
+  /**
    * Init isotope layout and filters
    */
   document.querySelectorAll(".isotope-layout").forEach(function (isotopeItem) {
@@ -245,25 +263,32 @@
 const toggle = document.getElementById("togglelight");
 const body = document.body;
 
-// Check localStorage for saved theme preference
-if (localStorage.getItem("theme") === "light-mode") {
-  body.classList.add("light-mode");
-  toggle.classList.remove("bi-moon-fill");
-  toggle.classList.add("bi-brightness-high-fill");
-}
+function syncThemeIcon() {
+  if (!toggle) return;
 
-toggle.addEventListener("click", function () {
-  // Toggle theme class
-  body.classList.toggle("light-mode");
-
-  // Update icon
   if (body.classList.contains("light-mode")) {
     toggle.classList.remove("bi-moon-fill");
     toggle.classList.add("bi-brightness-high-fill");
-    localStorage.setItem("theme", "light-mode"); // Save theme
   } else {
     toggle.classList.remove("bi-brightness-high-fill");
     toggle.classList.add("bi-moon-fill");
-    localStorage.setItem("theme", "dark-mode"); // Save theme
   }
-});
+}
+
+// Check localStorage for saved theme preference
+if (localStorage.getItem("theme") === "light-mode") {
+  body.classList.add("light-mode");
+}
+
+syncThemeIcon();
+
+if (toggle) {
+  toggle.addEventListener("click", function () {
+    body.classList.toggle("light-mode");
+    localStorage.setItem(
+      "theme",
+      body.classList.contains("light-mode") ? "light-mode" : "dark-mode"
+    );
+    syncThemeIcon();
+  });
+}

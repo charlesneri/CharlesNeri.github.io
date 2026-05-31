@@ -58,6 +58,7 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css
           <ul>
             <li><a href="#hero" class="active">Home</a></li>
             <li><a href="#about">About</a></li>
+            <li><a href="#experience">Experience</a></li>
             <li><a href="#services">Skills</a></li>
             <li><a href="#portfolio">Portfolio</a></li>    
             <li><a href="#contact">Contact</a></li>
@@ -69,37 +70,38 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css
 
     <main class="main">
       <!-- main Section -->
-      <section id="hero" class="hero section dark-background">
-        <img src="assets/img/try (2).jpg" alt="" data-aos="fade-in" />
+      <section id="hero" class="hero section">
+        <div class="container hero-wrapper" data-aos="fade-up" data-aos-delay="100">
+          <div class="hero-details">
+            <h2 id="mynem">Charles Q. Neri<br /></h2>
+            <p>
+              I'm
+              <span
+                class="typed"
+                data-typed-items="Designer, Developer, Freelancer"
+                >Freelancer</span
+              >
+            </p>
+            <p class="hero-intro">
+              Information Systems student focused on clean interfaces, frontend
+              development, and practical technology for better business
+              workflows.
+            </p>
+            <div class="social-links">
+              <a href="https://www.facebook.com/charles.neri13"><i class="bi bi-facebook"></i></a>
+              <a href="https://www.instagram.com/charles.neri13/"><i class="bi bi-instagram"></i></a>
+              <a href="https://www.linkedin.com/in/neri-charles-10775731b/"><i class="bi bi-linkedin"></i></a>
+              <a href="https://github.com/charlesneri"><i class="bi bi-github"></i></a>
+            </div>
 
-        <div class="container me-5 pe-5" data-aos="fade-up" data-aos-delay="100">
-          <h2 id="mynem">Charles Q. Neri<br /></h2>
-          <p >
-            I'm
-            <span
-              class="typed"
-              data-typed-items="Designer, Developer, Freelancer"
-              >Freelancer</span
-            >
-          </p>
-          <div class="social-links">
-            <a href="https://www.facebook.com/charles.neri13"><i class="bi bi-facebook"></i></a>
-            <a href="https://www.instagram.com/charles.neri13/"><i class="bi bi-instagram"></i></a>
-            <a href="https://www.linkedin.com/in/neri-charles-10775731b/"><i class="bi bi-linkedin"></i></a>
-            <a href="https://github.com/charlesneri"><i class="bi bi-github"></i></a>
+            <div id="theme-toggle">
+              <i class="bi bi-moon-fill" id="togglelight"></i>
+            </div>
           </div>
-          <div class="cv-btn-container">
-            <a href="cv.html">
-              <button class="cv-btn">
-                <span>My CV</span>
-              </button>
-            </a>
+          <div class="hero-image">
+            <img src="assets/img/Hero_true.JPG" alt="Charles Q. Neri" />
           </div>
-           
-          <div id="theme-toggle">
-            <i class="bi bi-moon-fill" id="togglelight"></i>
         </div>
-       </div>
       </section>
       <!-- /Hero Section -->
 
@@ -157,6 +159,64 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css
           </div>
         </div>
       </section>
+      <!-- Experience Section -->
+      <section id="experience" class="experience section">
+        <div class="container section-title" data-aos="fade-up">
+          <h2>Experience</h2>
+          <p>Hands-on practice through projects, design work, and academic development.</p>
+        </div>
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+          <div class="experience-list">
+            <div class="experience-item">
+              <div class="experience-icon">
+                <i class="bi bi-window-sidebar"></i>
+              </div>
+              <div class="experience-content">
+                <div class="experience-meta">2024 - Present</div>
+                <h3>Frontend Development Practice</h3>
+                <p>
+                  Built responsive web interfaces using Vue.js, Bootstrap,
+                  Vuetify, and Supabase while improving layout, usability, and
+                  project structure.
+                </p>
+              </div>
+            </div>
+
+            <div class="experience-item">
+              <div class="experience-icon">
+                <i class="bi bi-vector-pen"></i>
+              </div>
+              <div class="experience-content">
+                <div class="experience-meta">2023 - Present</div>
+                <h3>UI/UX Design Projects</h3>
+                <p>
+                  Created interface designs and redesign concepts in Figma for
+                  educational and portfolio projects, focusing on clarity,
+                  consistency, and user-friendly flows.
+                </p>
+              </div>
+            </div>
+
+            <div class="experience-item">
+              <div class="experience-icon">
+                <i class="bi bi-mortarboard"></i>
+              </div>
+              <div class="experience-content">
+                <div class="experience-meta">2022 - Present</div>
+                <h3>Information Systems Student</h3>
+                <p>
+                  Developed technical and business-focused knowledge through
+                  coursework, collaboration, documentation, and system-centered
+                  problem solving.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- /Experience Section -->
+
       <!-- Services Section -->
       <section id="services" class="services section">
         <!-- Section Title -->
@@ -166,61 +226,59 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css
         <!-- End Section Title -->
 
         <div class="container">
-          <div class="row gy-4 pb-5 mb-5 m-1">
+          <div class="skills-list">
             <div
-              class="col-lg-4 col-md-6 service-item d-flex"
+              class="service-item"
               data-aos="fade-up"
               data-aos-delay="100"
             >
-              <div class="icon flex-shrink-0">
+              <div class="icon">
                 <i class="bi bi-laptop"></i>
               </div>
               <div>
-                <h4 class="title">UI/UX Design (figma)</h4>
+                <h4 class="title">UI/UX Design</h4>
                 <p class="description">
-                  I enjoy designing visually striking interfaces that create
-                  seamless and enjoyable digital experiences.
+                  I design clean and purposeful interfaces in Figma, focusing
+                  on visual clarity, smooth user flows, and enjoyable digital
+                  experiences.
                 </p>
               </div>
             </div>
             <!-- End Service Item -->
 
             <div
-              class="col-lg-4 col-md-6 service-item d-flex"
+              class="service-item"
               data-aos="fade-up"
               data-aos-delay="200"
             >
-              <div class="icon flex-shrink-0">
+              <div class="icon">
                 <i class="bi bi-code-slash"></i>
               </div>
               <div>
-                <h4 class="title">front-end Deveeloper</h4>
+                <h4 class="title">Frontend Development</h4>
                 <p class="description">
-                  intermidiate level of knowledge in Vuejs 3, Bootsrap, Vuetify, and Supabase, with a passion for
-                  creating responsive and user-friendly web experiences. Skilled
-                  in optimizing performance and design for seamless
-                  functionality.
+                  I build responsive web interfaces with Vue.js 3, Bootstrap,
+                  Vuetify, and Supabase, with attention to usability,
+                  performance, and maintainable design.
                 </p>
               </div>
             </div>
             <!-- End Service Item -->
 
             <div
-              class="col-lg-4 col-md-6 service-item d-flex"
+              class="service-item"
               data-aos="fade-up"
               data-aos-delay="300"
             >
-              <div class="icon flex-shrink-0">
+              <div class="icon">
                 <i class="bi bi-chat-square"></i>
               </div>
               <div>
-                <h4 class="title">
-                  EffectiveCommunication <br />(Oral & Written)
-                </h4>
+                <h4 class="title">Effective Communication</h4>
                 <p class="description">
-                  Clear and professional communication, both verbal and written.
-                  Skilled in collaboration, presenting ideas, and creating
-                  concise, user-focused documentation.
+                  I communicate ideas clearly through collaboration,
+                  presentations, and concise documentation for both technical
+                  and non-technical audiences.
                 </p>
               </div>
             </div>
@@ -272,7 +330,10 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css
                   />
                   <div class="portfolio-info">
                     <h4>Cert. 1</h4>
-                    <p>This certificate was taken from learning HTML code in Sololearn.</p>
+                    <button class="portfolio-description-toggle" type="button">
+                      View description
+                    </button>
+                    <p class="portfolio-description">This certificate was taken from learning HTML code in Sololearn.</p>
                     <a
                       href="cerificates/sololearn.png"
     
@@ -296,7 +357,10 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css
                   />
                   <div class="portfolio-info">
                     <h4>Proj. 1</h4>
-                    <p>Creating Design with Figma link:<a href="https://www.figma.com/proto/PkkPQ083pV0mRVWnF5nUg7/Untitled?node-id=0-1&t=fy1PccKmXFPQ5VEJ-1">Click here</a></p>
+                    <button class="portfolio-description-toggle" type="button">
+                      View description
+                    </button>
+                    <p class="portfolio-description">Creating Design with Figma link:<a href="https://www.figma.com/proto/PkkPQ083pV0mRVWnF5nUg7/Untitled?node-id=0-1&t=fy1PccKmXFPQ5VEJ-1">Click here</a></p>
                     <a
                       href="assets/img/first page.png"
                       data-gallery="portfolio-gallery-product"
@@ -321,7 +385,10 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css
                   />
                   <div class="portfolio-info">
                     <h4>Cert. 2</h4>
-                    <p>Learn responsive design with Freecodecamp</p>
+                    <button class="portfolio-description-toggle" type="button">
+                      View description
+                    </button>
+                    <p class="portfolio-description">Learn responsive design with Freecodecamp</p>
                     <a
                       href="cerificates/web-design.png"
                       data-gallery="portfolio-gallery-app"
@@ -344,7 +411,10 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css
                   />
                   <div class="portfolio-info">
                     <h4>Proj 2</h4>
-                    <p>Redesigning of existing platform with figma for educational purpose only. Link: <a href="https://guitar-song.vercel.app/">Click Here</a> </p>
+                    <button class="portfolio-description-toggle" type="button">
+                      View description
+                    </button>
+                    <p class="portfolio-description">Redesigning of existing platform with figma for educational purpose only. Link: <a href="https://guitar-song.vercel.app/">Click Here</a> </p>
                     <a
                       href="assets/img/Android Compact - 1.png"
                       data-gallery="portfolio-gallery-product"
@@ -370,7 +440,10 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css
                   />
                   <div class="portfolio-info">
                     <h4>Cert. 3</h4>
-                    <p>This certificate was claim for thepurpose of upskilling and learning digital marketing which I am interested to learn. This certificatewas taken in Department of Information Communication Technology(DICT)</p>
+                    <button class="portfolio-description-toggle" type="button">
+                      View description
+                    </button>
+                    <p class="portfolio-description">This certificate was claim for thepurpose of upskilling and learning digital marketing which I am interested to learn. This certificatewas taken in Department of Information Communication Technology(DICT)</p>
                     <a
                       href="cerificates/DM001.png"
                       data-gallery="portfolio-gallery-app"
@@ -394,7 +467,10 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css
                   />
                   <div class="portfolio-info">
                   <h4>View me</h4>
-                    <p>Full development of Website platform for educational purpose only using VUejs and Supabase. Please Contact me for further view as supabase need to reactivate to make it work properly.  Link: <a href="https://teachandlearn.vercel.app/">Click here</a> </p>
+                    <button class="portfolio-description-toggle" type="button">
+                      View description
+                    </button>
+                    <p class="portfolio-description">Full development of Website platform for educational purpose only using VUejs and Supabase. Please Contact me for further view as supabase need to reactivate to make it work properly.  Link: <a href="https://teachandlearn.vercel.app/">Click here</a> </p>
                     <a
                       href="assets/img/teachandlearn.png"
                       data-gallery="portfolio-gallery-product"
