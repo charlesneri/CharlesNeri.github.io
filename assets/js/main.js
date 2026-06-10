@@ -171,6 +171,185 @@
   });
 
   /**
+   * Export the rendered webpage content as a section-by-section PDF download.
+   */
+  function cleanPdfClone(element) {
+    element
+      .querySelectorAll(
+        "script, button, iframe, .portfolio-filters, .preview-link, .scroll-top, #preloader, #theme-toggle"
+      )
+      .forEach((item) => item.remove());
+
+    element.querySelectorAll("[data-aos], [data-aos-delay]").forEach((item) => {
+      item.removeAttribute("data-aos");
+      item.removeAttribute("data-aos-delay");
+    });
+
+    element.querySelectorAll(".portfolio-info").forEach((item) => {
+      item.classList.add("details-open");
+    });
+
+    element.querySelectorAll(".isotope-item").forEach((item) => {
+      item.removeAttribute("style");
+    });
+
+    return element;
+  }
+
+  function createPdfPage(title, sourceElement, filterClass) {
+    const page = document.createElement("section");
+    page.className = "pdf-export-page";
+
+    const heading = document.createElement("h2");
+    heading.textContent = title;
+    page.appendChild(heading);
+
+    const clone = cleanPdfClone(sourceElement.cloneNode(true));
+
+    if (filterClass) {
+      clone.querySelectorAll(".portfolio-item").forEach((item) => {
+        if (!item.classList.contains(filterClass)) {
+          item.remove();
+        }
+      });
+    }
+
+    page.appendChild(clone);
+    return page;
+  }
+
+  function buildPdfDocument() {
+    const wrapper = document.createElement("div");
+    wrapper.className = "pdf-export-document";
+
+    [
+      ["Home", "#hero"],
+      ["About", "#about"],
+      ["Experience", "#experience"],
+      ["Skills", "#services"],
+      ["Certificates", "#portfolio", "filter-app"],
+      ["Projects", "#portfolio", "filter-product"],
+      ["Contact", "#contact"],
+    ].forEach(([title, selector, filterClass]) => {
+      const sourceElement = document.querySelector(selector);
+      if (sourceElement) {
+        wrapper.appendChild(createPdfPage(title, sourceElement, filterClass));
+      }
+    });
+
+    document.body.appendChild(wrapper);
+    return wrapper;
+  }
+
+  function waitForPdfImages(element) {
+    const images = Array.from(element.querySelectorAll("img"));
+
+    return Promise.all(
+      images.map((image) => {
+        if (image.complete && image.naturalWidth > 0) {
+          return Promise.resolve();
+        }
+
+        return new Promise((resolve) => {
+          image.addEventListener("load", resolve, { once: true });
+          image.addEventListener("error", resolve, { once: true });
+        });
+      })
+    );
+  }
+
+  function getPdfOptions() {
+    return {
+      margin: [10, 10, 10, 10],
+      filename: "Charles-Neri-Portfolio.pdf",
+      image: { type: "jpeg", quality: 0.96 },
+      html2canvas: {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#07080d",
+      },
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+      pagebreak: { mode: ["css", "legacy"] },
+    };
+  }
+
+  function showPdfPreview(pdfBlob) {
+    const oldPreview = document.querySelector(".pdf-preview-modal");
+    if (oldPreview) {
+      oldPreview.remove();
+    }
+
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+    const preview = document.createElement("div");
+    preview.className = "pdf-preview-modal active";
+    preview.innerHTML = `
+      <div class="pdf-preview-dialog" role="dialog" aria-modal="true" aria-label="PDF preview">
+        <div class="pdf-preview-header">
+          <h3>PDF Preview</h3>
+          <div class="pdf-preview-actions">
+            <a href="${pdfUrl}" download="Charles-Neri-Portfolio.pdf">Download</a>
+            <button type="button" class="pdf-preview-close">Close</button>
+          </div>
+        </div>
+        <iframe class="pdf-preview-frame" src="${pdfUrl}" title="PDF preview"></iframe>
+      </div>
+    `;
+
+    const closePreview = () => {
+      preview.remove();
+      URL.revokeObjectURL(pdfUrl);
+    };
+
+    preview
+      .querySelector(".pdf-preview-close")
+      .addEventListener("click", closePreview);
+
+    preview.addEventListener("click", (event) => {
+      if (event.target === preview) {
+        closePreview();
+      }
+    });
+
+    document.body.appendChild(preview);
+  }
+
+  const exportPdfButton = document.querySelector("#export-pdf");
+  if (exportPdfButton) {
+    exportPdfButton.addEventListener("click", async () => {
+      if (document.querySelector(".mobile-nav-active")) {
+        mobileNavToogle();
+      }
+
+      if (typeof html2pdf === "undefined") {
+        alert("PDF export is still loading. Please check your internet connection and try again.");
+        return;
+      }
+
+      const originalButtonText = exportPdfButton.innerHTML;
+      exportPdfButton.disabled = true;
+      exportPdfButton.innerHTML =
+        '<i class="bi bi-hourglass-split"></i><span>Exporting</span>';
+
+      const pdfDocument = buildPdfDocument();
+
+      try {
+        await waitForPdfImages(pdfDocument);
+
+        const pdfBlob = await html2pdf()
+          .set(getPdfOptions())
+          .from(pdfDocument)
+          .outputPdf("blob");
+
+        showPdfPreview(pdfBlob);
+      } finally {
+        pdfDocument.remove();
+        exportPdfButton.disabled = false;
+        exportPdfButton.innerHTML = originalButtonText;
+      }
+    });
+  }
+
+  /**
    * Init isotope layout and filters
    */
   document.querySelectorAll(".isotope-layout").forEach(function (isotopeItem) {
