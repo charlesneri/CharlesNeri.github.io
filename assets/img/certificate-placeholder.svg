@@ -1,0 +1,12 @@
+<svg width="700" height="500" viewBox="0 0 700 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="700" height="500" fill="#111827"/>
+  <rect x="84" y="58" width="532" height="384" rx="8" fill="#07080D" stroke="#D6A15F" stroke-opacity="0.55" stroke-width="3"/>
+  <rect x="126" y="104" width="448" height="58" rx="4" fill="#D6A15F" fill-opacity="0.18"/>
+  <rect x="160" y="202" width="380" height="14" rx="7" fill="#9AA4B2" fill-opacity="0.65"/>
+  <rect x="160" y="240" width="300" height="14" rx="7" fill="#9AA4B2" fill-opacity="0.45"/>
+  <rect x="160" y="278" width="340" height="14" rx="7" fill="#9AA4B2" fill-opacity="0.45"/>
+  <circle cx="514" cy="348" r="44" fill="#D6A15F" fill-opacity="0.28"/>
+  <circle cx="514" cy="348" r="25" fill="#D6A15F" fill-opacity="0.5"/>
+  <text x="350" y="142" text-anchor="middle" fill="#F8FAFC" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700">Add Certificate Image</text>
+  <text x="350" y="394" text-anchor="middle" fill="#9AA4B2" font-family="Arial, Helvetica, sans-serif" font-size="16">Replace this file path in index.html</text>
+</svg>

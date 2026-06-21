@@ -1,0 +1,8 @@
+<svg width="700" height="500" viewBox="0 0 700 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="700" height="500" fill="#111827"/>
+  <rect x="32" y="32" width="636" height="436" rx="8" fill="#07080D" stroke="#D6A15F" stroke-opacity="0.45" stroke-width="2" stroke-dasharray="12 10"/>
+  <path d="M268 221L316 173L363 220L388 195L446 253V319H254V235L268 221Z" fill="#D6A15F" fill-opacity="0.2"/>
+  <circle cx="411" cy="166" r="24" fill="#D6A15F" fill-opacity="0.45"/>
+  <text x="350" y="365" text-anchor="middle" fill="#F8FAFC" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700">Add Project Image</text>
+  <text x="350" y="397" text-anchor="middle" fill="#9AA4B2" font-family="Arial, Helvetica, sans-serif" font-size="16">Replace this file path in index.html</text>
+</svg>
