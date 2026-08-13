@@ -43,6 +43,47 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css
 
     <!-- Main CSS File -->
     <link href="assets/css/main.css" rel="stylesheet" />
+    <style>
+      .work-card { width: 100%; height: 100%; padding: 0; overflow: hidden; text-align: left; color: var(--default-color); background: var(--surface-color); border: 1px solid color-mix(in srgb, var(--default-color), transparent 88%); border-radius: 16px; box-shadow: 0 12px 35px rgba(0,0,0,.07); transition: transform .25s ease, box-shadow .25s ease; }
+      .work-card:hover, .work-card:focus-visible { transform: translateY(-6px); box-shadow: 0 18px 45px rgba(0,0,0,.14); outline: 3px solid color-mix(in srgb, var(--accent-color), transparent 55%); outline-offset: 3px; }
+      .work-card img { display: block; width: 100%; height: 240px; object-fit: cover; background: #f1f1f1; }
+      .work-card span { display: flex; flex-direction: column; gap: 6px; padding: 20px; }
+      .work-card strong { font-family: var(--heading-font); font-size: 20px; }
+      .work-card small { color: color-mix(in srgb, var(--default-color), transparent 35%); }
+      #certificates {
+        background: var(--background-color);
+        color: var(--default-color);
+      }
+      body:not(.light-mode) #certificates {
+        --background-color: #0b0e14;
+        --default-color: #d7dde8;
+        --heading-color: #f8fafc;
+        --surface-color: #111827;
+      }
+      body.light-mode #certificates {
+        --background-color: #f6f2ed;
+        --default-color: #2e3440;
+        --heading-color: #151922;
+        --surface-color: #ffffff;
+      }
+      .work-dialog .modal-content { overflow: hidden; color: var(--default-color); background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 20px; }
+      .work-dialog .dialog-close { position: absolute; z-index: 2; top: 18px; right: 18px; padding: 12px; background-color: rgba(255,255,255,.92); border-radius: 50%; opacity: 1; }
+      .work-dialog .dialog-image { display: block; width: 100%; max-height: 58vh; object-fit: contain; background: #101010; }
+      .work-dialog .modal-body { padding: 30px clamp(24px, 5vw, 55px) 40px; }
+      .work-dialog .dialog-type { color: var(--accent-color); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: 13px; }
+      .work-dialog h3 { margin: 8px 0 14px; color: var(--heading-color); font-size: clamp(28px, 4vw, 42px); }
+      .work-dialog dl { margin: 24px 0; padding: 16px 0; border-block: 1px solid color-mix(in srgb, var(--default-color), transparent 86%); }
+      .work-dialog dl div { display: grid; grid-template-columns: 130px 1fr; gap: 16px; }
+      .work-dialog dt, .work-dialog dd { margin: 0; }
+      .dialog-link { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; }
+      .dialog-navigation { display: flex; justify-content: space-between; gap: 14px; margin-top: 30px; padding-top: 22px; border-top: 1px solid color-mix(in srgb, var(--default-color), transparent 86%); }
+      .dialog-navigation button { display: inline-flex; align-items: center; gap: 9px; min-width: 125px; padding: 11px 18px; color: var(--default-color); background: var(--background-color); border: 1px solid var(--border-color); border-radius: 999px; font-weight: 700; transition: .25s ease; }
+      .dialog-navigation button:last-child { justify-content: flex-end; margin-left: auto; }
+      .dialog-navigation button:hover:not(:disabled), .dialog-navigation button:focus-visible { color: var(--contrast-color); background: var(--accent-color); border-color: var(--accent-color); }
+      .dialog-navigation button:disabled { cursor: not-allowed; opacity: .4; }
+      .dialog-position { display: block; margin-top: 16px; color: color-mix(in srgb, var(--default-color), transparent 35%); text-align: center; font-size: 13px; }
+      @media (max-width: 575px) { .work-card img { height: 210px; } .work-dialog dl div { grid-template-columns: 1fr; gap: 4px; } }
+    </style>
   </head>
 
   <body class="index-page">
@@ -56,11 +97,15 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css
           <ul>
             <li><a href="#hero" class="active">Home</a></li>
             <li><a href="#about">About</a></li>
+            <li><a href="#services">Skills &amp; Experience</a></li>
             <li><a href="#portfolio">Projects</a></li>
-            <li><a href="#services">Skills</a></li>
-            <li><a href="#experience">Experience</a></li>
-            <li><a href="#portfolio">Certificates</a></li>
+            <li><a href="#certificates">Certificates</a></li>
             <li><a href="#contact">Contact</a></li>
+            <li class="nav-theme-item">
+              <button id="theme-toggle" type="button" aria-label="Switch color theme" title="Switch color theme">
+                <i class="bi bi-moon-fill" id="togglelight" aria-hidden="true"></i>
+              </button>
+            </li>
           </ul>
           <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
@@ -90,25 +135,33 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css
             </p>
             <div class="social-links">
               <a
-                href="https://www.facebook.com/charles.neri13"
+                href="https://www.facebook.com/kimzy23"
+                aria-label="Facebook profile"
+                title="Facebook"
                 target="_blank"
                 rel="noopener noreferrer"
                 ><i class="bi bi-facebook"></i
               ></a>
               <a
                 href="https://www.instagram.com/charles.neri13/"
+                aria-label="Instagram profile"
+                title="Instagram"
                 target="_blank"
                 rel="noopener noreferrer"
                 ><i class="bi bi-instagram"></i
               ></a>
               <a
-                href="https://www.linkedin.com/in/neri-charles-10775731b/"
+                href="https://www.linkedin.com/in/charles-neri25/"
+                aria-label="LinkedIn profile"
+                title="LinkedIn"
                 target="_blank"
                 rel="noopener noreferrer"
                 ><i class="bi bi-linkedin"></i
               ></a>
               <a
                 href="https://github.com/charlesneri"
+                aria-label="GitHub profile"
+                title="GitHub"
                 target="_blank"
                 rel="noopener noreferrer"
                 ><i class="bi bi-github"></i
@@ -121,10 +174,14 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css
                 rel="noopener noreferrer"
                 ><i class="bi bi-google"></i
               ></a>
-            </div>
-
-            <div id="theme-toggle">
-              <i class="bi bi-moon-fill" id="togglelight"></i>
+              <a
+                href="https://www.onlinejobs.ph/jobseekers/info/3252642"
+                aria-label="OnlineJobs.ph profile"
+                title="OnlineJobs.ph"
+                target="_blank"
+                rel="noopener noreferrer"
+                ><span class="onlinejobs-icon" aria-hidden="true">OJ</span></a
+              >
             </div>
           </div>
           <div class="hero-image">
@@ -195,10 +252,11 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css
       <section id="services" class="services section">
         <!-- Section Title -->
         <div class="container section-title" data-aos="fade-up">
-          <h2>Skills</h2>
+          <h2>Skills &amp; Experience</h2>
           <p>
             Technical, design, office, and project skills developed through
-            academic work, portfolio projects, and hands-on practice.
+            academic work, portfolio projects, and hands-on practical
+            experience.
           </p>
         </div>
         <!-- End Section Title -->
@@ -383,11 +441,45 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css
               </div>
             </div>
             <!-- End Service Item -->
+            <div class="service-item" data-aos="fade-up" data-aos-delay="1300">
+              <div class="icon">
+                <i class="bi bi-diagram-3"></i>
+              </div>
+              <div>
+                <h4 class="title">Zapier Automation - Entry Level</h4>
+                <p class="description">
+                  I can build basic Zapier workflows that connect apps,
+                  capture inquiry details, and automate email messages to
+                  support faster and more consistent responses.
+                </p>
+              </div>
+            </div>
+            <!-- End Service Item -->
+          </div>
+        </div>
+        <div class="container experience-with-skills">
+          <div class="combined-section-heading" data-aos="fade-up">
+            <span>Practical experience</span>
+            <h3>How I apply these skills</h3>
+          </div>
+          <div class="experience-list">
+            <article class="experience-item" data-aos="zoom-in" data-aos-delay="100">
+              <div class="experience-icon"><i class="bi bi-window-stack"></i></div>
+              <div class="experience-content"><p class="experience-meta">Portfolio projects</p><h3>Website &amp; Interface Development</h3><p>I plan, design, and build responsive portfolio and educational interfaces using Figma, Vue.js, Bootstrap, Supabase, and Vercel.</p></div>
+            </article>
+            <article class="experience-item" data-aos="zoom-in" data-aos-delay="200">
+              <div class="experience-icon"><i class="bi bi-mortarboard"></i></div>
+              <div class="experience-content"><p class="experience-meta">Academic experience</p><h3>Capstone &amp; Team Projects</h3><p>A team leader and a member who contributes to project research, interface design, database planning, documentation, presentations, and collaborative development.</p></div>
+            </article>
+            <article class="experience-item" data-aos="zoom-in" data-aos-delay="300">
+              <div class="experience-icon"><i class="bi bi-headset"></i></div>
+              <div class="experience-content"><p class="experience-meta">Hands-on practice</p><h3>Administrative &amp; Digital Support</h3><p>I practice organized data entry, document preparation, email and calendar management, online research, and clear digital communication.</p></div>
+            </article>
           </div>
         </div>
       </section>
       <!-- Projects & Certificates Section -->
-      <section id="portfolio" class="portfolio section">
+      <section id="portfolio-legacy" class="portfolio section d-none" aria-hidden="true">
         <!-- Section Title -->
         <div class="container section-title" data-aos="fade-up">
           <h2>Projects &amp; Certificates</h2>
@@ -832,14 +924,32 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css
         </div>
       </section>
 
-      <!-- Experience Section -->
-      <section id="experience" class="about section">
-        <div class="container section-title" data-aos="fade-up">
-          <h2>Experience</h2>
-          <p>Professional experience and practical work are being updated.</p>
-        </div>
+      <!-- Separate Projects and Certificates galleries -->
+      <section id="portfolio" class="portfolio section portfolio-dialog-section">
+        <div class="container section-title" data-aos="fade-up"><h2>Projects</h2><p>A selection of websites, interface designs, branding, and creative work.</p></div>
+        <div class="container"><div class="row gy-4 portfolio-dialog-grid">
+          <div class="col-lg-4 col-md-6"><button class="work-card" type="button" data-bs-toggle="modal" data-bs-target="#workDialog" data-title="Figma Interface Design" data-image="assets/img/first page.png" data-type="UI/UX Design" data-tools="Figma" data-description="An interactive interface prototype created in Figma to explore page structure, navigation, and user experience." data-link="https://www.figma.com/proto/PkkPQ083pV0mRVWnF5nUg7/Untitled?node-id=0-1&amp;t=fy1PccKmXFPQ5VEJ-1" data-link-name="View Figma prototype"><img src="assets/img/first page.png" alt="Figma interface design preview"><span><strong>Figma Interface Design</strong><small>UI/UX Design · Figma</small></span></button></div>
+          <div class="col-lg-4 col-md-6"><button class="work-card" type="button" data-bs-toggle="modal" data-bs-target="#workDialog" data-title="Guitar Song Platform Redesign" data-image="assets/img/Android Compact - 1.png" data-type="Web &amp; UI Design" data-tools="Figma" data-description="An educational redesign of an existing platform, focused on cleaner mobile navigation." data-link="https://guitar-song.vercel.app/" data-link-name="Visit Guitar Song"><img src="assets/img/Android Compact - 1.png" alt="Guitar Song redesign preview"><span><strong>Guitar Song Platform Redesign</strong><small>Web &amp; UI Design · Figma</small></span></button></div>
+          <div class="col-lg-4 col-md-6"><button class="work-card" type="button" data-bs-toggle="modal" data-bs-target="#workDialog" data-title="Teach &amp; Learn Platform" data-image="assets/img/teachandlearn.png" data-type="Full-stack Web Development" data-tools="Vue.js, Supabase, Vercel" data-description="An educational website developed with Vue.js and Supabase. The Supabase project may need reactivation before every feature is available." data-link="https://teachandlearn.vercel.app/" data-link-name="Visit Teach &amp; Learn"><img src="assets/img/teachandlearn.png" alt="Teach and Learn website preview"><span><strong>Teach &amp; Learn Platform</strong><small>Web Development · Vue.js &amp; Supabase</small></span></button></div>
+          <div class="col-lg-4 col-md-6"><button class="work-card" type="button" data-bs-toggle="modal" data-bs-target="#workDialog" data-title="ServiceHub PH Logo" data-image="assets/img/SERVICEHUB PH.png" data-type="Brand Identity" data-tools="Canva" data-description="A logo designed for an academic Technopreneurship system proposal, giving the proposed service platform a clear visual identity." data-link="" data-link-name=""><img src="assets/img/SERVICEHUB PH.png" alt="ServiceHub PH logo"><span><strong>ServiceHub PH Logo</strong><small>Brand Identity · Canva</small></span></button></div>
+          <div class="col-lg-4 col-md-6"><button class="work-card" type="button" data-bs-toggle="modal" data-bs-target="#workDialog" data-title="Teach &amp; Learn Logo" data-image="assets/img/Teach&amp;Learn.png" data-type="Logo Design" data-tools="Canva" data-description="A logo created for the Teach &amp; Learn educational platform to communicate collaboration and accessible learning." data-link="https://teachandlearn.vercel.app/" data-link-name="Visit Teach &amp; Learn"><img src="assets/img/Teach&amp;Learn.png" alt="Teach and Learn logo"><span><strong>Teach &amp; Learn Logo</strong><small>Logo Design · Canva</small></span></button></div>
+          <div class="col-lg-4 col-md-6"><button class="work-card" type="button" data-bs-toggle="modal" data-bs-target="#workDialog" data-title="Capstone Conference Poster" data-image="assets/img/Poster for scii-com.png" data-type="Poster Design" data-tools="Canva" data-description="A conference poster presenting the relevance and development of our capstone project in a clear, visually engaging format." data-link="" data-link-name=""><img src="assets/img/Poster for scii-com.png" alt="Capstone conference poster"><span><strong>Capstone Conference Poster</strong><small>Poster Design · Canva</small></span></button></div>
+          <div class="col-lg-4 col-md-6"><button class="work-card" type="button" data-bs-toggle="modal" data-bs-target="#workDialog" data-title="Birthday Cake Topper — Design 1" data-image="assets/img/1.png" data-type="Personal Design" data-tools="Canva" data-description="A custom birthday cake topper concept created in Canva for personal use." data-link="" data-link-name=""><img src="assets/img/1.png" alt="Birthday cake topper design one"><span><strong>Birthday Cake Topper — Design 1</strong><small>Personal Design · Canva</small></span></button></div>
+          <div class="col-lg-4 col-md-6"><button class="work-card" type="button" data-bs-toggle="modal" data-bs-target="#workDialog" data-title="Birthday Cake Topper — Design 2" data-image="assets/img/2.png" data-type="Personal Design" data-tools="Canva" data-description="A second custom birthday cake topper concept created in Canva for personal use." data-link="" data-link-name=""><img src="assets/img/2.png" alt="Birthday cake topper design two"><span><strong>Birthday Cake Topper — Design 2</strong><small>Personal Design · Canva</small></span></button></div>
+          <div class="col-lg-4 col-md-6"><button class="work-card" type="button" data-bs-toggle="modal" data-bs-target="#workDialog" data-title="Zapier Email Inquiry Automation" data-image="assets/img/Email Message inquiry- ai zapier.png" data-type="Workflow Automation" data-tools="Zapier, Email Automation, AI" data-description="A Zapier automation mockup for handling email-message inquiries. The workflow captures inquiry information and uses connected automation steps to prepare or send a timely, consistent email response." data-link="" data-link-name=""><img src="assets/img/Email Message inquiry- ai zapier.png" alt="Zapier email message inquiry automation workflow mockup"><span><strong>Zapier Email Inquiry Automation</strong><small>Workflow Automation &middot; Zapier</small></span></button></div>
+        </div></div>
       </section>
-
+      <section id="certificates" class="portfolio section light-background portfolio-dialog-section">
+        <div class="container section-title" data-aos="fade-up"><h2>Certificates</h2><p>Courses and certifications completed as part of my continuing professional development.</p></div>
+        <div class="container"><div class="row gy-4 portfolio-dialog-grid">
+          <div class="col-lg-4 col-md-6"><button class="work-card" type="button" data-bs-toggle="modal" data-bs-target="#workDialog" data-title="Introduction to HTML" data-image="cerificates/sololearn.png" data-type="Course Certificate" data-tools="HTML, SoloLearn" data-description="Awarded after completing SoloLearn's introductory HTML course and its foundational lessons on structuring web pages." data-link="cerificates/sololearn.png" data-link-name="View full certificate"><img src="cerificates/sololearn.png" alt="SoloLearn HTML certificate"><span><strong>Introduction to HTML</strong><small>SoloLearn · HTML</small></span></button></div>
+          <div class="col-lg-4 col-md-6"><button class="work-card" type="button" data-bs-toggle="modal" data-bs-target="#workDialog" data-title="Responsive Web Design" data-image="cerificates/web-design.png" data-type="Course Certificate" data-tools="HTML, CSS, Responsive Design" data-description="Completed FreeCodeCamp training in responsive web design, covering accessible HTML and layouts that adapt across screen sizes." data-link="cerificates/web-design.png" data-link-name="View full certificate"><img src="cerificates/web-design.png" alt="Responsive Web Design certificate"><span><strong>Responsive Web Design</strong><small>FreeCodeCamp · Web Design</small></span></button></div>
+          <div class="col-lg-4 col-md-6"><button class="work-card" type="button" data-bs-toggle="modal" data-bs-target="#workDialog" data-title="Digital Marketing" data-image="cerificates/DM001.png" data-type="Training Certificate" data-tools="Digital Marketing" data-description="Completed digital marketing upskilling through the Department of Information and Communications Technology (DICT)." data-link="cerificates/DM001.png" data-link-name="View full certificate"><img src="cerificates/DM001.png" alt="DICT Digital Marketing certificate"><span><strong>Digital Marketing</strong><small>DICT · Digital Marketing</small></span></button></div>
+          <div class="col-lg-4 col-md-6"><button class="work-card" type="button" data-bs-toggle="modal" data-bs-target="#workDialog" data-title="Google Ads Search Certification" data-image="assets/img/Google ads Search.png" data-type="Professional Certification" data-tools="Google Ads, Search Advertising" data-description="Demonstrates foundational knowledge of search campaign setup, keyword targeting, ad creation, and performance optimization." data-link="assets/img/Google ads Search.png" data-link-name="View full certificate"><img src="assets/img/Google ads Search.png" alt="Google Ads Search certificate"><span><strong>Google Ads Search Certification</strong><small>Google · Search Advertising</small></span></button></div>
+          <div class="col-lg-4 col-md-6"><button class="work-card" type="button" data-bs-toggle="modal" data-bs-target="#workDialog" data-title="Google Ads Video Certification" data-image="assets/img/Google ads video.png" data-type="Professional Certification" data-tools="Google Ads, Video Advertising" data-description="Demonstrates foundational knowledge of video campaign setup, audience targeting, ad creation, and performance optimization." data-link="assets/img/Google ads video.png" data-link-name="View full certificate"><img src="assets/img/Google ads video.png" alt="Google Ads Video certificate"><span><strong>Google Ads Video Certification</strong><small>Google · Video Advertising</small></span></button></div>
+        </div></div>
+      </section>
+      <div class="modal fade work-dialog" id="workDialog" tabindex="-1" aria-labelledby="workDialogTitle" aria-hidden="true"><div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl"><div class="modal-content"><button type="button" class="btn-close dialog-close" data-bs-dismiss="modal" aria-label="Close"></button><img id="workDialogImage" class="dialog-image" src="" alt=""><div class="modal-body"><span id="workDialogType" class="dialog-type"></span><h3 id="workDialogTitle"></h3><p id="workDialogDescription"></p><dl><div><dt>Tools / Skills</dt><dd id="workDialogTools"></dd></div></dl><a id="workDialogLink" class="dialog-link" href="#" target="_blank" rel="noopener noreferrer"><span></span><i class="bi bi-arrow-up-right"></i></a><div class="dialog-navigation" aria-label="Item navigation"><button id="workDialogPrevious" type="button"><i class="bi bi-arrow-left"></i><span>Previous</span></button><button id="workDialogNext" type="button"><span>Next</span><i class="bi bi-arrow-right"></i></button></div><small id="workDialogPosition" class="dialog-position" aria-live="polite"></small></div></div></div></div>
       <!-- Contact Section -->
       <section id="contact" class="contact section">
         <!-- Section Title -->
@@ -894,14 +1004,14 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css
               <div class="col-lg-4">
                 <a
                   class="info-item contact-link d-flex align-items-center"
-                  href="https://mail.google.com/mail/?view=cm&fs=1&to=charlesneri0201@gmail.com"
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=charlesqneri@gmail.com"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <i class="bi bi-envelope flex-shrink-0"></i>
                   <div>
                     <h3>Email</h3>
-                    <p>charlesneri0201@gmail.com</p>
+                    <p>charlesqneri@gmail.com</p>
                   </div>
                 </a>
               </div>
@@ -944,13 +1054,13 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css
             ><i class="bi bi-instagram"></i
           ></a>
           <a
-            href="https://www.facebook.com/charles.neri13"
+            href="https://www.facebook.com/kimzy23"
             target="_blank"
             rel="noopener noreferrer"
             ><i class="bi bi-facebook"></i
           ></a>
           <a
-            href="https://www.linkedin.com/in/neri-charles-10775731b/"
+            href="https://www.linkedin.com/in/charles-neri25/"
             target="_blank"
             rel="noopener noreferrer"
             ><i class="bi bi-linkedin"></i
@@ -969,6 +1079,14 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css
             rel="noopener noreferrer"
             ><i class="bi bi-google"></i
           ></a>
+          <a
+            href="https://www.onlinejobs.ph/jobseekers/info/3252642"
+            aria-label="OnlineJobs.ph profile"
+            title="OnlineJobs.ph"
+            target="_blank"
+            rel="noopener noreferrer"
+            ><span class="onlinejobs-icon" aria-hidden="true">OJ</span></a
+          >
         </div>
         <div class="container">
           <div class="copyright">
@@ -1014,6 +1132,69 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css
     <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
 
     <!-- Main JS File -->
+    <script>
+      const workDialog = document.getElementById("workDialog");
+      const previousWork = document.getElementById("workDialogPrevious");
+      const nextWork = document.getElementById("workDialogNext");
+      let activeWorkItems = [];
+      let activeWorkIndex = 0;
+
+      function displayWorkItem(index) {
+        const card = activeWorkItems[index];
+        if (!card) return;
+
+        activeWorkIndex = index;
+        const image = document.getElementById("workDialogImage");
+        const link = document.getElementById("workDialogLink");
+        image.src = card.dataset.image;
+        image.alt = card.dataset.title + " enlarged preview";
+        document.getElementById("workDialogTitle").textContent = card.dataset.title;
+        document.getElementById("workDialogType").textContent = card.dataset.type;
+        document.getElementById("workDialogDescription").textContent = card.dataset.description;
+        document.getElementById("workDialogTools").textContent = card.dataset.tools;
+        if (card.dataset.link) {
+          link.href = card.dataset.link;
+          link.querySelector("span").textContent = card.dataset.linkName || "Open link";
+          link.hidden = false;
+        } else {
+          link.hidden = true;
+        }
+
+        const groupName = card.closest("section").id === "certificates"
+          ? "Certificate"
+          : "Project";
+        document.getElementById("workDialogPosition").textContent =
+          groupName + " " + (activeWorkIndex + 1) + " of " + activeWorkItems.length;
+        previousWork.disabled = activeWorkIndex === 0;
+        nextWork.disabled = activeWorkIndex === activeWorkItems.length - 1;
+        previousWork.setAttribute("aria-label", "View previous " + groupName.toLowerCase());
+        nextWork.setAttribute("aria-label", "View next " + groupName.toLowerCase());
+      }
+
+      workDialog.addEventListener("show.bs.modal", function (event) {
+        const card = event.relatedTarget;
+        const group = card.closest("section");
+        activeWorkItems = Array.from(group.querySelectorAll(".work-card"));
+        displayWorkItem(activeWorkItems.indexOf(card));
+      });
+
+      previousWork.addEventListener("click", function () {
+        displayWorkItem(activeWorkIndex - 1);
+      });
+
+      nextWork.addEventListener("click", function () {
+        displayWorkItem(activeWorkIndex + 1);
+      });
+
+      workDialog.addEventListener("keydown", function (event) {
+        if (event.key === "ArrowLeft" && !previousWork.disabled) {
+          displayWorkItem(activeWorkIndex - 1);
+        }
+        if (event.key === "ArrowRight" && !nextWork.disabled) {
+          displayWorkItem(activeWorkIndex + 1);
+        }
+      });
+    </script>
     <script src="assets/js/main.js"></script>
   </body>
 </html>

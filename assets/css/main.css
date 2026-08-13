@@ -228,7 +228,27 @@ footer {
   cursor: pointer;
   transition: background 0.3s ease, transform 0.3s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  margin-top: 10px;
+  margin: 0 0 0 8px;
+  padding: 0;
+}
+
+.navmenu .nav-theme-item {
+  display: flex;
+  align-items: center;
+}
+
+.navmenu .nav-theme-item #theme-toggle {
+  flex: 0 0 40px;
+}
+
+@media (max-width: 1199px) {
+  .navmenu .nav-theme-item {
+    padding: 10px 20px 18px;
+  }
+
+  .navmenu .nav-theme-item #theme-toggle {
+    margin: 0;
+  }
 }
 
 /* Hover Effect */
@@ -707,6 +727,14 @@ body.dark .toggle-btn i {
   text-decoration: none;
 }
 
+.footer .onlinejobs-icon {
+  color: inherit;
+  font-family: var(--nav-font);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
 .footer .copyright {
   padding-top: 25px;
   border-top: 1px solid
@@ -978,6 +1006,21 @@ section:last-of-type::after,
   color: var(--accent-color);
 }
 
+.hero .onlinejobs-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  font-family: var(--nav-font);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  vertical-align: 3px;
+}
+
 .hero-image {
   justify-self: end;
   width: 100%;
@@ -1121,6 +1164,8 @@ section:last-of-type::after,
 }
 
 .experience-item {
+  position: relative;
+  overflow: hidden;
   height: 100%;
   padding: 28px;
   border: 1px solid var(--border-color);
@@ -1128,6 +1173,43 @@ section:last-of-type::after,
   background: var(--surface-color);
   box-shadow: 0 18px 44px rgba(0, 0, 0, 0.14);
   transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.experience-with-skills { margin-top: 72px; }
+
+.combined-section-heading { margin-bottom: 28px; text-align: center; }
+
+.combined-section-heading span { color: var(--accent-color); font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+
+.combined-section-heading h3 { margin-top: 8px; font-size: clamp(28px, 4vw, 40px); }
+
+.services .service-item::after,
+.experience-item::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background: linear-gradient(120deg, transparent 30%, color-mix(in srgb, var(--accent-color), transparent 88%), transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 0.65s ease;
+}
+
+.services .service-item:hover::after,
+.experience-item:hover::after { transform: translateX(120%); }
+
+.services .service-item:hover .icon,
+.experience-item:hover .experience-icon { animation: card-icon-bounce 0.55s ease; }
+
+@keyframes card-icon-bounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  45% { transform: translateY(-7px) scale(1.08); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .services .service-item,
+  .experience-item,
+  .services .service-item::after,
+  .experience-item::after { transition: none; animation: none; }
 }
 
 .experience-item:hover {
@@ -1211,6 +1293,41 @@ section:last-of-type::after,
   transform: translateY(-4px);
   border-color: color-mix(in srgb, var(--accent-color), transparent 35%);
   box-shadow: 0 24px 54px rgba(0, 0, 0, 0.2);
+}
+
+/* Keep card hover transforms active after AOS applies its animation state. */
+.services .service-item[data-aos].aos-animate:hover,
+.services .experience-item[data-aos].aos-animate:hover {
+  transform: translateY(-10px) scale(1.02);
+  border-color: color-mix(in srgb, var(--accent-color), transparent 20%);
+  box-shadow:
+    0 28px 60px rgba(0, 0, 0, 0.24),
+    0 0 0 1px color-mix(in srgb, var(--accent-color), transparent 60%);
+}
+
+.services .service-item .icon,
+.services .experience-item .experience-icon,
+.services .service-item .title,
+.services .experience-item h3 {
+  transition: color 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
+}
+
+.services .service-item:hover .icon,
+.services .experience-item:hover .experience-icon {
+  color: var(--contrast-color);
+  background: var(--accent-color);
+}
+
+.services .service-item:hover .title,
+.services .experience-item:hover h3 {
+  color: var(--accent-color);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .services .service-item[data-aos].aos-animate:hover,
+  .services .experience-item[data-aos].aos-animate:hover {
+    transform: none;
+  }
 }
 
 .light-mode .services .service-item {
