@@ -27,6 +27,8 @@ Open `/editor.html` after running the site, for example `http://localhost:5173/e
 
 Open `/editor.html` for the visual form editor. It is the only editing interface and manages Profile, About and Education, Skills, Experience, Projects, Certificates, and Contact/social details without JSON. Repeatable content has add and delete controls; the required Profile, About, and Contact records can be cleared or edited but are not deletable.
 
+`/admin.html` is kept as a shortcut and redirects to `/editor.html`.
+
 ## Images
 
 The seed data keeps the current local image paths. For new images, create a public Storage bucket named `portfolio-assets`, upload a file, and save its public URL in `image_url`. A dedicated in-site admin upload screen can be added next.

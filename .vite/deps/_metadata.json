@@ -1,0 +1,21 @@
+{
+  "hash": "ad768ba3",
+  "configHash": "50fe14c2",
+  "lockfileHash": "987a5f32",
+  "browserHash": "cb182cf2",
+  "optimized": {
+    "vue": {
+      "src": "../../node_modules/vue/dist/vue.runtime.esm-bundler.js",
+      "file": "vue.js",
+      "fileHash": "db0fcbe4",
+      "needsInterop": false
+    },
+    "@supabase/supabase-js": {
+      "src": "../../node_modules/@supabase/supabase-js/dist/index.mjs",
+      "file": "@supabase_supabase-js.js",
+      "fileHash": "ae9d9dfa",
+      "needsInterop": false
+    }
+  },
+  "chunks": {}
+}

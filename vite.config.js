@@ -11,5 +11,5 @@ export default defineConfig({
     __VUE_PROD_DEVTOOLS__: false,
     __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false,
   },
-  build: { rollupOptions: { input: { portfolio: 'index.html', editor: 'editor.html' } } },
+  build: { rollupOptions: { input: { portfolio: 'index.html', admin: 'admin.html', editor: 'editor.html' } } },
 })
