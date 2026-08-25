@@ -11,7 +11,9 @@ function getSupabaseUrl(value) {
 
   try {
     const url = new URL(value)
-    return ['http:', 'https:'].includes(url.protocol) ? url.toString() : ''
+    if (!['http:', 'https:'].includes(url.protocol)) return ''
+    // Supabase client URLs must be the project root, not /rest/v1 or /auth/v1.
+    return `${url.origin}/`
   } catch {
     return ''
   }
