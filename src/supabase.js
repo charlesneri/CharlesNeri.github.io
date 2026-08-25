@@ -21,6 +21,12 @@ const url = getSupabaseUrl(rawUrl)
 
 export const supabaseConfigurationError = rawUrl && !url
   ? 'VITE_SUPABASE_URL must be a full http(s) URL or a Supabase project reference.'
-  : ''
+  : !rawUrl && !key
+    ? 'Both VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY are missing. Add them in Vercel Environment Variables and redeploy.'
+    : !rawUrl
+      ? 'VITE_SUPABASE_URL is missing. Add it in Vercel Environment Variables and redeploy.'
+      : !key
+        ? 'VITE_SUPABASE_PUBLISHABLE_KEY is missing. Add it in Vercel Environment Variables and redeploy.'
+        : ''
 export const isSupabaseConfigured = Boolean(url && key)
 export const supabase = isSupabaseConfigured ? createClient(url, key) : null
