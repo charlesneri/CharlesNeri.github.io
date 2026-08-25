@@ -14,11 +14,11 @@ const fallbackProjects = [
 ]
 
 const fallbackCertificates = [
-  { title: 'Introduction to HTML', image_url: 'cerificates/sololearn.png', item_type: 'Course Certificate', tools: 'HTML, SoloLearn', description: "Awarded after completing SoloLearn's introductory HTML course and its foundational lessons on structuring web pages.", link_url: 'cerificates/sololearn.png', link_name: 'View full certificate' },
-  { title: 'Responsive Web Design', image_url: 'cerificates/web-design.png', item_type: 'Course Certificate', tools: 'HTML, CSS, Responsive Design', description: 'Completed FreeCodeCamp training in responsive web design.', link_url: 'cerificates/web-design.png', link_name: 'View full certificate' },
-  { title: 'Digital Marketing', image_url: 'cerificates/DM001.png', item_type: 'Training Certificate', tools: 'Digital Marketing', description: 'Completed digital marketing upskilling through DICT.', link_url: 'cerificates/DM001.png', link_name: 'View full certificate' },
-  { title: 'Google Ads Search Certification', image_url: 'assets/img/Google ads Search.png', item_type: 'Professional Certification', tools: 'Google Ads, Search Advertising', description: 'Demonstrates foundational knowledge of search campaign setup, keyword targeting, ad creation, and performance optimization.', link_url: 'assets/img/Google ads Search.png', link_name: 'View full certificate' },
-  { title: 'Google Ads Video Certification', image_url: 'assets/img/Google ads video.png', item_type: 'Professional Certification', tools: 'Google Ads, Video Advertising', description: 'Demonstrates foundational knowledge of video campaign setup, audience targeting, ad creation, and performance optimization.', link_url: 'assets/img/Google ads video.png', link_name: 'View full certificate' },
+  { title: 'Introduction to HTML', image_url: 'cerificates/sololearn.png', item_type: 'Course Certificate', tools: 'HTML, SoloLearn', description: "Awarded after completing SoloLearn's introductory HTML course and its foundational lessons on structuring web pages.", link_url: '', link_name: '' },
+  { title: 'Responsive Web Design', image_url: 'cerificates/web-design.png', item_type: 'Course Certificate', tools: 'HTML, CSS, Responsive Design', description: 'Completed FreeCodeCamp training in responsive web design.', link_url: '', link_name: '' },
+  { title: 'Digital Marketing', image_url: 'cerificates/DM001.png', item_type: 'Training Certificate', tools: 'Digital Marketing', description: 'Completed digital marketing upskilling through DICT.', link_url: '', link_name: '' },
+  { title: 'Google Ads Search Certification', image_url: 'assets/img/Google ads Search.png', item_type: 'Professional Certification', tools: 'Google Ads, Search Advertising', description: 'Demonstrates foundational knowledge of search campaign setup, keyword targeting, ad creation, and performance optimization.', link_url: '', link_name: '' },
+  { title: 'Google Ads Video Certification', image_url: 'assets/img/Google ads video.png', item_type: 'Professional Certification', tools: 'Google Ads, Video Advertising', description: 'Demonstrates foundational knowledge of video campaign setup, audience targeting, ad creation, and performance optimization.', link_url: '', link_name: '' },
 ]
 
 function mountGallery(selector, table, fallbackItems) {
@@ -34,13 +34,13 @@ function mountGallery(selector, table, fallbackItems) {
         if (!isSupabaseConfigured) return
         const fields = table === 'projects'
           ? 'id, title, image_url, category, tools, description, link_url, link_name, sort_order'
-          : 'id, title, image_url, category, skills, description, credential_url, sort_order'
+          : 'id, title, image_url, category, skills, description, sort_order'
         const { data, error: queryError } = await supabase.from(table).select(fields).eq('published', true).order('sort_order')
         loading.value = false
         if (queryError) { error.value = 'Could not load the latest items. Showing saved portfolio content.'; return }
         items.value = data.map((item) => table === 'projects'
-          ? { ...item, item_type: item.category }
-          : { ...item, item_type: item.category, tools: item.skills, link_url: item.credential_url, link_name: 'View full certificate' })
+          ? { ...item, image_url: freshImageUrl(item.image_url, item.updated_at), item_type: item.category }
+          : { ...item, image_url: freshImageUrl(item.image_url), item_type: item.category, tools: item.skills, link_url: '', link_name: '' })
       })
       return { items, loading, error }
     },
@@ -54,6 +54,8 @@ function mountGallery(selector, table, fallbackItems) {
     </div>`,
   }).mount(element)
 }
+
+function freshImageUrl(url, version = Date.now()) { return url ? `${url}${url.includes('?') ? '&' : '?'}v=${version}` : '' }
 
 mountGallery('#portfolio .portfolio-dialog-grid', 'projects', fallbackProjects)
 mountGallery('#certificates .portfolio-dialog-grid', 'certificates', fallbackCertificates)

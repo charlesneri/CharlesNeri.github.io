@@ -9,8 +9,8 @@ const resources = [
     ['summary', 'About summary', 'textarea'], ['image_url', 'About image URL', 'url'],
   ], blank: { id: 1, summary: '', image_url: '', education: [] } },
   { key: 'contact_details', label: 'Contact & social links', singleton: true, fields: [
-    ['email', 'Public email', 'email'], ['phone', 'Phone', 'text'], ['address', 'Address', 'textarea'], ['map_url', 'Google Maps URL', 'url'], ['facebook_url', 'Facebook URL', 'url'], ['instagram_url', 'Instagram URL', 'url'], ['linkedin_url', 'LinkedIn URL', 'url'], ['github_url', 'GitHub URL', 'url'],
-  ], blank: { id: 1, email: '', phone: '', address: '', map_url: '', facebook_url: '', instagram_url: '', linkedin_url: '', github_url: '' } },
+    ['email', 'Public email', 'email'], ['phone', 'Phone', 'text'], ['address', 'Address', 'textarea'], ['map_url', 'Google Maps URL', 'url'], ['facebook_url', 'Facebook URL', 'url'], ['instagram_url', 'Instagram URL', 'url'], ['linkedin_url', 'LinkedIn URL', 'url'], ['github_url', 'GitHub URL', 'url'], ['social_links_json', 'Social links (JSON)', 'textarea'],
+  ], blank: { id: 1, email: '', phone: '', address: '', map_url: '', facebook_url: '', instagram_url: '', linkedin_url: '', github_url: '', social_links_json: '[]' } },
   { key: 'skills', label: 'Skills', fields: [
     ['name', 'Skill name', 'text', true], ['category', 'Category', 'text'], ['description', 'Description', 'textarea'], ['icon', 'Bootstrap icon class', 'text'], ['sort_order', 'Display order', 'number'], ['published', 'Published', 'checkbox'],
   ], blank: { name: '', category: '', description: '', icon: 'bi-star', sort_order: 0, published: true } },
@@ -21,11 +21,29 @@ const resources = [
     ['title', 'Project title', 'text', true], ['category', 'Category', 'text'], ['tools', 'Tools / skills', 'text'], ['description', 'Description', 'textarea'], ['image_url', 'Project image URL', 'url', true], ['link_url', 'Project link URL', 'url'], ['link_name', 'Link label', 'text'], ['sort_order', 'Display order', 'number'], ['published', 'Published', 'checkbox'],
   ], blank: { title: '', category: '', tools: '', description: '', image_url: '', link_url: '', link_name: '', sort_order: 0, published: true } },
   { key: 'certificates', label: 'Certificates', imageField: 'image_url', fields: [
-    ['title', 'Certificate title', 'text', true], ['issuer', 'Issuer', 'text'], ['category', 'Category', 'text'], ['skills', 'Skills', 'text'], ['description', 'Description', 'textarea'], ['image_url', 'Certificate image URL', 'url', true], ['credential_url', 'Credential URL', 'url'], ['sort_order', 'Display order', 'number'], ['published', 'Published', 'checkbox'],
-  ], blank: { title: '', issuer: '', category: 'Course Certificate', skills: '', description: '', image_url: '', credential_url: '', sort_order: 0, published: true } },
+    ['title', 'Certificate title', 'text', true], ['issuer', 'Issuer', 'text'], ['category', 'Category', 'text'], ['skills', 'Skills', 'text'], ['description', 'Description', 'textarea'], ['image_url', 'Certificate image URL', 'url', true], ['sort_order', 'Display order', 'number'], ['published', 'Published', 'checkbox'],
+  ], blank: { title: '', issuer: '', category: 'Course Certificate', skills: '', description: '', image_url: '', sort_order: 0, published: true } },
 ]
 
 const copy = (value) => JSON.parse(JSON.stringify(value))
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024
+const IMAGE_BUCKET = 'image_buckets'
+
+function readableError(error, fallback) {
+  const message = error?.message || ''
+  if (/size|large|payload|413/i.test(message)) return 'The image is too large. Please choose an image no larger than 5 MB.'
+  if (/permission|policy|not authorized|row-level/i.test(message)) return 'You do not have permission to complete this action. Check the Supabase admin policies.'
+  if (/network|fetch|connection|timeout/i.test(message)) return 'The request failed because of a network problem. Check your connection and try again.'
+  return message || fallback
+}
+const defaultSocialLinks = [
+  { label: 'Facebook', url: 'https://www.facebook.com/kimzy23', icon: 'bi-facebook' },
+  { label: 'Instagram', url: 'https://www.instagram.com/charles.neri13/', icon: 'bi-instagram' },
+  { label: 'LinkedIn', url: 'https://www.linkedin.com/in/charles-neri25/', icon: 'bi-linkedin' },
+  { label: 'GitHub', url: 'https://github.com/charlesneri', icon: 'bi-github' },
+  { label: 'Google Drive', url: 'https://drive.google.com/drive/folders/1DfNq7XAKOxTveOHuy0w5XvAzodyKocqd?usp=sharing', icon: 'bi-google' },
+  { label: 'OnlineJobs.ph', url: 'https://www.onlinejobs.ph/jobseekers/info/3252642', icon: 'onlinejobs' },
+]
 
 createApp({
   setup() {
@@ -41,6 +59,7 @@ createApp({
     function normalise(row) {
       const next = copy(row)
       if (active.value.education && !Array.isArray(next.education)) next.education = []
+      if (active.value.key === 'contact_details') next.social_links_json = JSON.stringify(next.social_links || defaultSocialLinks, null, 2)
       return next
     }
     async function checkSession() {
@@ -80,19 +99,23 @@ createApp({
     function removeEducation(index) { record.value.education.splice(index, 1) }
     async function uploadImage(event, fieldName) {
       const file = event.target.files?.[0]
-      event.target.value = ''
       if (!file) return
       if (!file.type.startsWith('image/')) { notify('Please choose an image file.', 'danger'); return }
-      if (file.size > 5 * 1024 * 1024) { notify('Images must be 5 MB or smaller.', 'danger'); return }
+      if (file.size > MAX_IMAGE_SIZE) { notify('The image is too large. Please choose an image no larger than 5 MB.', 'danger'); return }
       busy.value = true; message.value = ''
-      const extension = file.name.split('.').pop()?.toLowerCase().replace(/[^a-z0-9]/g, '') || 'jpg'
-      const baseName = (record.value.title || record.value.full_name || active.value.key).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || active.value.key
-      const path = `${active.value.key}/${baseName}-${crypto.randomUUID()}.${extension}`
-      const { error } = await supabase.storage.from('portfolio-images').upload(path, file, { contentType: file.type, upsert: false })
-      if (error) { busy.value = false; notify(error.message, 'danger'); return }
-      record.value[fieldName] = supabase.storage.from('portfolio-images').getPublicUrl(path).data.publicUrl
-      busy.value = false
-      notify('Image uploaded. Save changes to publish it.', 'success')
+      try {
+        const extension = file.name.split('.').pop()?.toLowerCase().replace(/[^a-z0-9]/g, '') || 'jpg'
+        const baseName = (record.value.title || record.value.full_name || active.value.key).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || active.value.key
+        const path = `${active.value.key}/${baseName}-${crypto.randomUUID()}.${extension}`
+        const { data, error } = await supabase.storage.from(IMAGE_BUCKET).upload(path, file, { contentType: file.type, upsert: false })
+        if (error) throw error
+        if (!data?.path) throw new Error('Supabase did not return a stored file path.')
+        record.value[fieldName] = supabase.storage.from(IMAGE_BUCKET).getPublicUrl(data.path).data.publicUrl
+        event.target.required = false
+        notify(`${file.name} was stored permanently in Supabase. Click Save changes to update the website.`, 'success')
+      } catch (error) {
+        notify(readableError(error, 'The image could not be uploaded. Please try again.'), 'danger')
+      } finally { busy.value = false }
     }
     function addUploadInputs() {
       if (!active.value.imageField) return
@@ -100,22 +123,56 @@ createApp({
       if (!urlInput || urlInput.dataset.uploadReady) return
       const upload = document.createElement('input')
       upload.type = 'file'; upload.accept = 'image/*'; upload.className = 'form-control mb-2'
+      upload.required = !record.value[active.value.imageField]
       upload.setAttribute('aria-label', `Upload ${active.value.label} image`)
       upload.addEventListener('change', (event) => uploadImage(event, active.value.imageField))
       urlInput.parentElement.insertBefore(upload, urlInput)
-      urlInput.placeholder = 'Or paste an image URL'
+      urlInput.required = false
+      urlInput.type = 'hidden'
+      const label = urlInput.parentElement.querySelector(`label[for="${urlInput.id}"]`)
+      if (label) label.hidden = true
       urlInput.dataset.uploadReady = 'true'
     }
     async function save() {
       if (!record.value) return
+      if (active.value.imageField && !record.value[active.value.imageField]) {
+        notify(`Please upload an image for ${active.value.label} before saving.`, 'danger')
+        return
+      }
       busy.value = true; message.value = ''
       const value = copy(record.value)
-      const { data, error } = await supabase.from(active.value.key).upsert(value).select().single()
-      busy.value = false
-      if (error) { notify(error.message, 'danger'); return }
-      await load()
-      if (data) edit(data)
-      notify('Saved successfully.', 'success')
+      if (active.value.key === 'contact_details') {
+        try {
+          const links = JSON.parse(value.social_links_json || '[]')
+          if (!Array.isArray(links) || links.some((link) => !link || typeof link.label !== 'string' || typeof link.url !== 'string' || typeof link.icon !== 'string')) throw new Error('Each social link needs label, url, and icon fields.')
+          value.social_links = links
+          delete value.social_links_json
+        } catch (error) { busy.value = false; notify(`Invalid social links JSON: ${error.message}`, 'danger'); return }
+      }
+      try {
+        let migrationRequired = false
+        let { data, error } = await supabase.from(active.value.key).upsert(value).select().single()
+        if (error && active.value.key === 'contact_details' && /social_links|column/i.test(error.message || '')) {
+          const legacyValue = copy(value)
+          delete legacyValue.social_links
+          const legacyResult = await supabase.from(active.value.key).upsert(legacyValue).select().single()
+          if (!legacyResult.error) {
+            data = legacyResult.data
+            error = null
+            migrationRequired = true
+          } else {
+            error = legacyResult.error
+            data = legacyResult.data
+          }
+        }
+        if (error) throw error
+        await load()
+        if (data) edit(data)
+        localStorage.setItem('portfolio-content-updated', Date.now().toString())
+        notify(migrationRequired ? 'Contact details saved. Run supabase/migrate-social-links.sql to enable customizable social links.' : 'Saved successfully. The portfolio page will refresh automatically.', migrationRequired ? 'warning' : 'success')
+      } catch (error) {
+        notify(readableError(error, 'Your changes could not be saved. Please try again.'), 'danger')
+      } finally { busy.value = false }
     }
     async function remove() {
       if (!selected.value || !confirm(`Delete ${recordName(selected.value)}?`)) return

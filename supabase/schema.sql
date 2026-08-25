@@ -53,8 +53,10 @@ create table if not exists public.contact_details (
   instagram_url text not null default '',
   linkedin_url text not null default '',
   github_url text not null default '',
+  social_links jsonb not null default '[]'::jsonb,
   updated_at timestamptz not null default now()
 );
+alter table public.contact_details add column if not exists social_links jsonb not null default '[]'::jsonb;
 
 create table if not exists public.skills (
   id uuid primary key default gen_random_uuid(),
@@ -133,16 +135,16 @@ grant insert on public.contact_messages to anon, authenticated;
 grant all on public.admin_users, public.profile, public.about, public.contact_details, public.skills, public.experiences, public.projects, public.certificates, public.contact_messages to authenticated;
 
 -- Public image URLs are used by the portfolio; only authenticated admins may upload.
-insert into storage.buckets (id, name, public) values ('portfolio-images', 'portfolio-images', true)
+insert into storage.buckets (id, name, public) values ('image_buckets', 'image_buckets', true)
 on conflict (id) do update set public = true;
 drop policy if exists "Public can read portfolio images" on storage.objects;
 drop policy if exists "Admins can upload portfolio images" on storage.objects;
 drop policy if exists "Admins can update portfolio images" on storage.objects;
 drop policy if exists "Admins can delete portfolio images" on storage.objects;
-create policy "Public can read portfolio images" on storage.objects for select using (bucket_id = 'portfolio-images');
-create policy "Admins can upload portfolio images" on storage.objects for insert to authenticated with check (bucket_id = 'portfolio-images' and exists (select 1 from public.admin_users where user_id = auth.uid()));
-create policy "Admins can update portfolio images" on storage.objects for update to authenticated using (bucket_id = 'portfolio-images' and exists (select 1 from public.admin_users where user_id = auth.uid())) with check (bucket_id = 'portfolio-images' and exists (select 1 from public.admin_users where user_id = auth.uid()));
-create policy "Admins can delete portfolio images" on storage.objects for delete to authenticated using (bucket_id = 'portfolio-images' and exists (select 1 from public.admin_users where user_id = auth.uid()));
+create policy "Public can read portfolio images" on storage.objects for select using (bucket_id = 'image_buckets');
+create policy "Admins can upload portfolio images" on storage.objects for insert to authenticated with check (bucket_id = 'image_buckets' and exists (select 1 from public.admin_users where user_id = auth.uid()));
+create policy "Admins can update portfolio images" on storage.objects for update to authenticated using (bucket_id = 'image_buckets' and exists (select 1 from public.admin_users where user_id = auth.uid())) with check (bucket_id = 'image_buckets' and exists (select 1 from public.admin_users where user_id = auth.uid()));
+create policy "Admins can delete portfolio images" on storage.objects for delete to authenticated using (bucket_id = 'image_buckets' and exists (select 1 from public.admin_users where user_id = auth.uid()));
 
 -- Allows this revised schema to be run after the earlier portfolio_items version.
 drop policy if exists "Admins can read their admin record" on public.admin_users;

@@ -19,21 +19,19 @@ if (element) {
           return
         }
         sending.value = true
-        const message = { ...form }
-        const { error: emailError } = await supabase.functions.invoke('send-contact-email', { body: message })
-        if (emailError) {
+        try {
+          const message = { ...form }
+          const { error: emailError } = await supabase.functions.invoke('send-contact-email', { body: message })
+          if (emailError) throw emailError
+          const { error } = await supabase.from('contact_messages').insert(message)
+          if (error) throw error
+        } catch {
+          statusType.value = 'error'
+          status.value = 'Your message could not be sent. Check your connection and try again, or email me directly.'
           sending.value = false
-          statusType.value = 'error'
-          status.value = 'Your message could not be emailed. Please try again or email me directly.'
           return
         }
-        const { error } = await supabase.from('contact_messages').insert(message)
         sending.value = false
-        if (error) {
-          statusType.value = 'error'
-          status.value = 'Your message could not be sent. Please try again or email me directly.'
-          return
-        }
         statusType.value = 'success'
         status.value = 'Thank you — your message has been sent.'
         Object.assign(form, { name: '', email: '', subject: '', message: '' })
