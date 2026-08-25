@@ -1125,6 +1125,7 @@ section:last-of-type::after,
 .about .content {
   position: relative;
   z-index: 2;
+  width: 100%;
   min-width: 0;
 }
 

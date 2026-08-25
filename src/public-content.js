@@ -36,7 +36,7 @@ async function loadPublicContent() {
   }
 
   if (about.data) {
-    createApp({ data: () => ({ about: about.data }), template: `<div class="col-lg-7 content"><h3>{{ about.summary }}</h3><hr><h4><b>Education</b></h4><ul class="education-list"><li v-for="item in about.education" :key="item.title" class="education-item"><div class="edu-left"><i class="bi bi-check2-all"></i><b>{{ item.title }}</b><br>{{ item.school }}</div><div class="edu-right">{{ item.date }}</div></li></ul></div>` }).mount('#about .content')
+    createApp({ data: () => ({ about: about.data }), template: `<div><h3>{{ about.summary }}</h3><hr><h4><b>Education</b></h4><ul class="education-list"><li v-for="item in about.education" :key="item.title" class="education-item"><div class="edu-left"><i class="bi bi-check2-all"></i><b>{{ item.title }}</b><br>{{ item.school }}</div><div class="edu-right">{{ item.date }}</div></li></ul></div>` }).mount('#about .content')
     document.querySelector('#about .profile-img img').src = imageUrl(about.data.image_url || 'assets/img/dp-final.png')
   }
 
