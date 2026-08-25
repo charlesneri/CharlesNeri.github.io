@@ -101,6 +101,7 @@
    * Animation on scroll function and init
    */
   function aosInit() {
+    if (typeof AOS === "undefined") return;
     AOS.init({
       duration: 600,
       easing: "ease-in-out",
@@ -117,13 +118,15 @@
   if (selectTyped) {
     let typed_strings = selectTyped.getAttribute("data-typed-items");
     typed_strings = typed_strings.split(",");
-    new Typed(".typed", {
-      strings: typed_strings,
-      loop: true,
-      typeSpeed: 100,
-      backSpeed: 50,
-      backDelay: 2000,
-    });
+    if (typeof Typed !== "undefined") {
+      new Typed(".typed", {
+        strings: typed_strings,
+        loop: true,
+        typeSpeed: 100,
+        backSpeed: 50,
+        backDelay: 2000,
+      });
+    }
   }
 
   /**
@@ -138,7 +141,7 @@
       if (swiperElement.classList.contains("swiper-tab")) {
         initSwiperWithCustomPagination(swiperElement, config);
       } else {
-        new Swiper(swiperElement, config);
+        if (typeof Swiper !== "undefined") new Swiper(swiperElement, config);
       }
     });
   }
@@ -148,9 +151,9 @@
   /**
    * Initiate glightbox
    */
-  const glightbox = GLightbox({
-    selector: ".glightbox",
-  });
+  const glightbox = typeof GLightbox !== "undefined"
+    ? GLightbox({ selector: ".glightbox" })
+    : null;
 
   /**
    * Toggle portfolio descriptions
@@ -179,6 +182,7 @@
     let sort = isotopeItem.getAttribute("data-sort") ?? "original-order";
 
     let initIsotope;
+    if (typeof imagesLoaded === "undefined" || typeof Isotope === "undefined") return;
     imagesLoaded(isotopeItem.querySelector(".isotope-container"), function () {
       initIsotope = new Isotope(
         isotopeItem.querySelector(".isotope-container"),
