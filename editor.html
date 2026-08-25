@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfolio Content Editor</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet" />
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+    <link href="assets/css/main.css" rel="stylesheet" />
+    <style>
+      .editor-page { min-height: 100vh; background: var(--background-color); }
+      .editor-header { --background-color: rgba(7, 8, 13, .88); background: var(--background-color); backdrop-filter: blur(14px); }
+      .light-mode .editor-header { --background-color: rgba(255, 255, 255, .9); }
+      .editor-header .logo h1 { margin: 0; font-size: 22px; }
+      .editor-header .navmenu ul { display: flex; align-items: center; gap: 26px; margin: 0; padding: 0; list-style: none; }
+      .editor-header .navmenu a { padding: 0; font-size: 14px; }
+      .editor-shell { max-width: 1240px; padding-top: 140px !important; padding-bottom: 80px !important; }
+      .editor-shell .card { color: var(--default-color); background: var(--surface-color); border: 1px solid color-mix(in srgb, var(--default-color), transparent 84%); border-radius: 16px; }
+      .editor-shell .text-muted { color: color-mix(in srgb, var(--default-color), transparent 35%) !important; }
+      .editor-sidebar { position: sticky; top: 110px; overflow: hidden; border: 1px solid color-mix(in srgb, var(--default-color), transparent 84%); border-radius: 14px; }
+      .editor-sidebar .list-group-item, .editor-shell .record { color: var(--default-color); background: var(--surface-color); border-color: color-mix(in srgb, var(--default-color), transparent 88%); }
+      .editor-sidebar .list-group-item:hover, .editor-sidebar .list-group-item.active, .editor-shell .record.active { color: var(--contrast-color); background: var(--accent-color); border-color: var(--accent-color); }
+      .editor-shell .form-control { color: var(--default-color); background: color-mix(in srgb, var(--surface-color), var(--background-color) 28%); border-color: color-mix(in srgb, var(--default-color), transparent 78%); }
+      .editor-shell .form-control:focus { color: var(--default-color); background: var(--surface-color); border-color: var(--accent-color); box-shadow: 0 0 0 .2rem color-mix(in srgb, var(--accent-color), transparent 78%); }
+      .editor-shell .btn-success { color: var(--contrast-color); background: var(--accent-color); border-color: var(--accent-color); }
+      .editor-shell .btn-success:hover { background: color-mix(in srgb, var(--accent-color), black 18%); border-color: color-mix(in srgb, var(--accent-color), black 18%); }
+      .editor-shell .btn-outline-primary { color: var(--accent-color); border-color: var(--accent-color); }
+      .editor-shell .btn-outline-primary:hover { color: var(--contrast-color); background: var(--accent-color); border-color: var(--accent-color); }
+      .required:after { content: ' *'; color: #dc3545; }.education-item { background: color-mix(in srgb, var(--surface-color), var(--background-color) 35%); border: 1px solid color-mix(in srgb, var(--default-color), transparent 84%); border-radius: .75rem; padding: 1rem; }
+      @media (max-width: 767px) { .editor-header .navmenu ul { gap: 15px; }.editor-header .navmenu a { font-size: 12px; }.editor-shell { padding-top: 110px !important; }.editor-sidebar { position: static; } }
+    </style>
+  </head>
+  <body class="index-page editor-page">
+    <header id="header" class="header editor-header d-flex align-items-center fixed-top">
+      <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+        <a href="/" class="logo d-flex align-items-center"><h1>Charles Neri</h1></a>
+        <nav class="navmenu" aria-label="Editor navigation"><ul><li><a href="/">Portfolio</a></li><li><a href="/editor.html" class="active">Editor</a></li><li class="nav-theme-item"><button id="theme-toggle" type="button" aria-label="Switch color theme" title="Switch color theme"><i class="bi bi-moon-fill" id="togglelight" aria-hidden="true"></i></button></li></ul></nav>
+      </div>
+    </header>
+    <div id="editor-app"></div>
+    <footer id="footer" class="footer"><div class="container"><div class="social-links d-flex justify-content-center"><a href="https://www.instagram.com/charles.neri13/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="bi bi-instagram"></i></a><a href="https://www.facebook.com/kimzy23" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="bi bi-facebook"></i></a><a href="https://www.linkedin.com/in/charles-neri25/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a><a href="https://github.com/charlesneri" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="bi bi-github"></i></a></div><div class="copyright"><span>Portfolio content editor</span></div></div></footer>
+    <script>
+      const editorThemeToggle = document.getElementById('togglelight')
+      const editorBody = document.body
+      function syncEditorTheme() { if (!editorThemeToggle) return; editorThemeToggle.className = editorBody.classList.contains('light-mode') ? 'bi bi-brightness-high-fill' : 'bi bi-moon-fill' }
+      if (localStorage.getItem('theme') === 'light-mode') editorBody.classList.add('light-mode')
+      syncEditorTheme()
+      editorThemeToggle?.addEventListener('click', () => { editorBody.classList.toggle('light-mode'); localStorage.setItem('theme', editorBody.classList.contains('light-mode') ? 'light-mode' : 'dark-mode'); syncEditorTheme() })
+    </script>
+    <script type="module" src="/src/editor.js"></script>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+import { createClient } from '@supabase/supabase-js'
+
+const rawUrl = import.meta.env.VITE_SUPABASE_URL?.trim()
+const key = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY?.trim()
+
+// A Supabase project reference (for example, "abc123") is convenient to copy,
+// but createClient requires the full HTTPS project URL.
+function getSupabaseUrl(value) {
+  if (!value) return ''
+  if (/^[a-z0-9-]+$/i.test(value)) return `https://${value}.supabase.co`
+
+  try {
+    const url = new URL(value)
+    return ['http:', 'https:'].includes(url.protocol) ? url.toString() : ''
+  } catch {
+    return ''
+  }
+}
+
+const url = getSupabaseUrl(rawUrl)
+
+export const supabaseConfigurationError = rawUrl && !url
+  ? 'VITE_SUPABASE_URL must be a full http(s) URL or a Supabase project reference.'
+  : ''
+export const isSupabaseConfigured = Boolean(url && key)
+export const supabase = isSupabaseConfigured ? createClient(url, key) : null
