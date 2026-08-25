@@ -1408,6 +1408,33 @@ section:last-of-type::after,
   color: var(--accent-color);
 }
 
+/* Content grids stay dense on small screens while cards grow with their text. */
+.skills-list,
+.experience-list {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+}
+
+.services .service-item,
+.experience-item {
+  height: auto;
+  min-height: 0;
+}
+
+.services .service-item .title,
+.experience-content h3,
+.services .service-item .description,
+.experience-content p {
+  overflow-wrap: break-word;
+}
+
+@media (max-width: 767px) {
+  .skills-list,
+  .experience-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 /*--------------------------------------------------------------
 # Portfolio Section
 --------------------------------------------------------------*/
@@ -2142,9 +2169,6 @@ section:last-of-type::after,
 /*--------------------------------------------------------------
 # Starter Section Section
 --------------------------------------------------------------*/
-.starter-section {
-  /* Add your styles here */
-}
 /*my edit*/
  .education-list {
     list-style: none;
@@ -2214,6 +2238,96 @@ section:last-of-type::after,
   width: 56px;
   height: 56px;
   border-radius: 14px;
+}
+
+/* Keep the card groups centered and let every card use the section width. */
+.services > .container,
+.experience-with-skills,
+.portfolio-dialog-section > .container:not(.section-title) {
+  width: min(100% - 32px, 1180px);
+  max-width: 1180px;
+  margin-inline: auto;
+}
+
+.skills-list,
+.experience-list {
+  width: 100%;
+  max-width: none;
+  margin-inline: auto;
+  display: flex !important;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  gap: 22px;
+}
+
+.services .service-item,
+.experience-item {
+  flex: 1 1 calc((100% - 44px) / 3);
+  width: auto !important;
+  max-width: calc((100% - 44px) / 3);
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.portfolio-dialog-grid.row {
+  display: flex !important;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  width: 100%;
+  max-width: none;
+  margin-inline: auto;
+  gap: 24px 22px;
+}
+
+.portfolio-dialog-grid > [class*="col-"] {
+  flex: 1 1 calc((100% - 44px) / 3);
+  min-width: 0;
+  width: auto !important;
+  max-width: calc((100% - 44px) / 3);
+}
+
+.portfolio-dialog-grid .work-card {
+  width: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 767px) {
+  .skills-list,
+  .experience-list,
+  .portfolio-dialog-grid.row {
+    display: flex !important;
+    gap: 16px;
+  }
+
+  .services .service-item,
+  .experience-item,
+  .portfolio-dialog-grid > [class*="col-"] {
+    flex-basis: calc((100% - 16px) / 2);
+    max-width: calc((100% - 16px) / 2);
+  }
+
+  .services > .container,
+  .experience-with-skills,
+  .portfolio-dialog-section > .container:not(.section-title) {
+    width: min(100% - 24px, 1180px);
+  }
+}
+
+@media (max-width: 420px) {
+  .skills-list,
+  .experience-list,
+  .portfolio-dialog-grid.row {
+    flex-direction: column;
+  }
+
+  .services .service-item,
+  .experience-item,
+  .portfolio-dialog-grid > [class*="col-"] {
+    flex-basis: 100%;
+    max-width: 100%;
+  }
 }
 
 .contact-message-form {

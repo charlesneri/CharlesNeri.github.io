@@ -1,11 +1,11 @@
-import { createApp, computed, ref } from 'vue'
+import { createApp, computed, onMounted, ref } from 'vue'
 import { isSupabaseConfigured, supabase, supabaseConfigurationError } from './supabase'
 
 const resources = [
-  { key: 'profile', label: 'Profile', singleton: true, fields: [
-    ['full_name', 'Full name', 'text', true], ['headline', 'Professional headline', 'text'], ['introduction', 'Introduction', 'textarea'], ['email', 'Email', 'email'], ['phone', 'Phone', 'text'], ['address', 'Address', 'textarea'], ['profile_image_url', 'Hero image URL', 'url'],
+  { key: 'profile', label: 'Profile', singleton: true, imageField: 'profile_image_url', fields: [
+    ['full_name', 'Full name', 'text', true], ['headline', 'Professional headline', 'text'], ['introduction', 'Introduction', 'textarea'], ['email', 'Email', 'email'], ['phone', 'Phone', 'text'], ['address', 'Address', 'textarea'], ['profile_image_url', 'Hero / profile image URL', 'url'],
   ], blank: { id: 1, full_name: '', headline: '', introduction: '', email: '', phone: '', address: '', profile_image_url: '' } },
-  { key: 'about', label: 'About & education', singleton: true, education: true, fields: [
+  { key: 'about', label: 'About & education', singleton: true, education: true, imageField: 'image_url', fields: [
     ['summary', 'About summary', 'textarea'], ['image_url', 'About image URL', 'url'],
   ], blank: { id: 1, summary: '', image_url: '', education: [] } },
   { key: 'contact_details', label: 'Contact & social links', singleton: true, fields: [
@@ -17,11 +17,11 @@ const resources = [
   { key: 'experiences', label: 'Experience', fields: [
     ['label', 'Label', 'text'], ['title', 'Title', 'text', true], ['description', 'Description', 'textarea'], ['icon', 'Bootstrap icon class', 'text'], ['sort_order', 'Display order', 'number'], ['published', 'Published', 'checkbox'],
   ], blank: { label: '', title: '', description: '', icon: 'bi-briefcase', sort_order: 0, published: true } },
-  { key: 'projects', label: 'Projects', fields: [
-    ['title', 'Project title', 'text', true], ['category', 'Category', 'text'], ['tools', 'Tools / skills', 'text'], ['description', 'Description', 'textarea'], ['image_url', 'Image URL', 'url', true], ['link_url', 'Project link URL', 'url'], ['link_name', 'Link label', 'text'], ['sort_order', 'Display order', 'number'], ['published', 'Published', 'checkbox'],
+  { key: 'projects', label: 'Projects', imageField: 'image_url', fields: [
+    ['title', 'Project title', 'text', true], ['category', 'Category', 'text'], ['tools', 'Tools / skills', 'text'], ['description', 'Description', 'textarea'], ['image_url', 'Project image URL', 'url', true], ['link_url', 'Project link URL', 'url'], ['link_name', 'Link label', 'text'], ['sort_order', 'Display order', 'number'], ['published', 'Published', 'checkbox'],
   ], blank: { title: '', category: '', tools: '', description: '', image_url: '', link_url: '', link_name: '', sort_order: 0, published: true } },
-  { key: 'certificates', label: 'Certificates', fields: [
-    ['title', 'Certificate title', 'text', true], ['issuer', 'Issuer', 'text'], ['category', 'Category', 'text'], ['skills', 'Skills', 'text'], ['description', 'Description', 'textarea'], ['image_url', 'Image URL', 'url', true], ['credential_url', 'Credential URL', 'url'], ['sort_order', 'Display order', 'number'], ['published', 'Published', 'checkbox'],
+  { key: 'certificates', label: 'Certificates', imageField: 'image_url', fields: [
+    ['title', 'Certificate title', 'text', true], ['issuer', 'Issuer', 'text'], ['category', 'Category', 'text'], ['skills', 'Skills', 'text'], ['description', 'Description', 'textarea'], ['image_url', 'Certificate image URL', 'url', true], ['credential_url', 'Credential URL', 'url'], ['sort_order', 'Display order', 'number'], ['published', 'Published', 'checkbox'],
   ], blank: { title: '', issuer: '', category: 'Course Certificate', skills: '', description: '', image_url: '', credential_url: '', sort_order: 0, published: true } },
 ]
 
@@ -78,6 +78,34 @@ createApp({
     function newRecord() { selectedId.value = null; record.value = normalise(active.value.blank) }
     function addEducation() { record.value.education.push({ title: '', school: '', date: '' }) }
     function removeEducation(index) { record.value.education.splice(index, 1) }
+    async function uploadImage(event, fieldName) {
+      const file = event.target.files?.[0]
+      event.target.value = ''
+      if (!file) return
+      if (!file.type.startsWith('image/')) { notify('Please choose an image file.', 'danger'); return }
+      if (file.size > 5 * 1024 * 1024) { notify('Images must be 5 MB or smaller.', 'danger'); return }
+      busy.value = true; message.value = ''
+      const extension = file.name.split('.').pop()?.toLowerCase().replace(/[^a-z0-9]/g, '') || 'jpg'
+      const baseName = (record.value.title || record.value.full_name || active.value.key).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || active.value.key
+      const path = `${active.value.key}/${baseName}-${crypto.randomUUID()}.${extension}`
+      const { error } = await supabase.storage.from('portfolio-images').upload(path, file, { contentType: file.type, upsert: false })
+      if (error) { busy.value = false; notify(error.message, 'danger'); return }
+      record.value[fieldName] = supabase.storage.from('portfolio-images').getPublicUrl(path).data.publicUrl
+      busy.value = false
+      notify('Image uploaded. Save changes to publish it.', 'success')
+    }
+    function addUploadInputs() {
+      if (!active.value.imageField) return
+      const urlInput = document.getElementById(fieldId(active.value.imageField))
+      if (!urlInput || urlInput.dataset.uploadReady) return
+      const upload = document.createElement('input')
+      upload.type = 'file'; upload.accept = 'image/*'; upload.className = 'form-control mb-2'
+      upload.setAttribute('aria-label', `Upload ${active.value.label} image`)
+      upload.addEventListener('change', (event) => uploadImage(event, active.value.imageField))
+      urlInput.parentElement.insertBefore(upload, urlInput)
+      urlInput.placeholder = 'Or paste an image URL'
+      urlInput.dataset.uploadReady = 'true'
+    }
     async function save() {
       if (!record.value) return
       busy.value = true; message.value = ''
@@ -97,8 +125,13 @@ createApp({
       if (error) { notify(error.message, 'danger'); return }
       notify('Deleted.', 'success'); await load()
     }
+    onMounted(() => {
+      const observer = new MutationObserver(addUploadInputs)
+      observer.observe(document.getElementById('editor-app'), { childList: true, subtree: true })
+      addUploadInputs()
+    })
     checkSession()
-    return { resources, email, password, user, authorized, active, rows, selectedId, selected, record, busy, message, messageType, configured, configurationError: supabaseConfigurationError, fieldId, recordName, login, logout, choose, edit, newRecord, addEducation, removeEducation, save, remove }
+    return { resources, email, password, user, authorized, active, rows, selectedId, selected, record, busy, message, messageType, configured, configurationError: supabaseConfigurationError, fieldId, recordName, login, logout, choose, edit, newRecord, addEducation, removeEducation, uploadImage, save, remove }
   },
   template: `<main class="container editor-shell py-5">
     <div v-if="!configured" class="alert alert-warning">{{ configurationError || 'Add your Supabase configuration to .env.local and restart Vite.' }}</div>

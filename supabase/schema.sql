@@ -132,6 +132,18 @@ grant select on public.profile, public.about, public.contact_details, public.ski
 grant insert on public.contact_messages to anon, authenticated;
 grant all on public.admin_users, public.profile, public.about, public.contact_details, public.skills, public.experiences, public.projects, public.certificates, public.contact_messages to authenticated;
 
+-- Public image URLs are used by the portfolio; only authenticated admins may upload.
+insert into storage.buckets (id, name, public) values ('portfolio-images', 'portfolio-images', true)
+on conflict (id) do update set public = true;
+drop policy if exists "Public can read portfolio images" on storage.objects;
+drop policy if exists "Admins can upload portfolio images" on storage.objects;
+drop policy if exists "Admins can update portfolio images" on storage.objects;
+drop policy if exists "Admins can delete portfolio images" on storage.objects;
+create policy "Public can read portfolio images" on storage.objects for select using (bucket_id = 'portfolio-images');
+create policy "Admins can upload portfolio images" on storage.objects for insert to authenticated with check (bucket_id = 'portfolio-images' and exists (select 1 from public.admin_users where user_id = auth.uid()));
+create policy "Admins can update portfolio images" on storage.objects for update to authenticated using (bucket_id = 'portfolio-images' and exists (select 1 from public.admin_users where user_id = auth.uid())) with check (bucket_id = 'portfolio-images' and exists (select 1 from public.admin_users where user_id = auth.uid()));
+create policy "Admins can delete portfolio images" on storage.objects for delete to authenticated using (bucket_id = 'portfolio-images' and exists (select 1 from public.admin_users where user_id = auth.uid()));
+
 -- Allows this revised schema to be run after the earlier portfolio_items version.
 drop policy if exists "Admins can read their admin record" on public.admin_users;
 drop policy if exists "Public can read profile" on public.profile;
