@@ -6,7 +6,7 @@
 2. In Supabase, create a project. In **Connect > App Frameworks**, copy the project URL and publishable key into `.env.local`.
 3. Run `npm run dev`.
 
-Without `.env.local`, the site continues to show its built-in content. With it, Projects and Certificates load from Supabase, and the Contact form saves client messages there.
+Without `.env.local`, the site continues to show its built-in content. With it, Projects and Certificates load from Supabase, and the Contact form saves client messages there. To deliver inquiries directly to Gmail, complete the Resend and Edge Function setup in [supabase/EMAIL_SETUP.md](supabase/EMAIL_SETUP.md).
 
 ## Create the database
 
