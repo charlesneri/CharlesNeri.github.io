@@ -2,7 +2,7 @@ import { createApp, reactive, ref } from 'vue'
 
 // Web3Forms access keys are public form identifiers, not private API secrets.
 // Restrict this key to your deployed site in Web3Forms to help prevent abuse.
-const web3FormsAccessKey = 'dfc067d9-707b-4fb1-baa6-e8f015d8f016'
+const web3FormsAccessKey = '5c8f6c81-d0ed-4b05-bfef-95c98b63dcc1'
 
 const element = document.querySelector('#contact-form')
 
@@ -42,7 +42,7 @@ if (element) {
         }
         sending.value = false
         statusType.value = 'success'
-        status.value = 'Thank you — your message has been sent.'
+        status.value = 'Thank you — your message has been sent. I’ll check my Inbox, Spam, and Promotions folders and get back to you soon.'
         Object.assign(form, { name: '', email: '', subject: '', message: '', botcheck: false })
       }
 
